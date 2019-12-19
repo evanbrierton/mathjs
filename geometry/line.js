@@ -81,6 +81,7 @@ class Line {
   }
 
   intersect(line) {
+    if (this.m === line.m) throw Error('Lines are parallell');
     const x = (line.c - this.c) / (this.m - line.m);
     return new Point({ x, y: this.m * x + this.c });
   }
