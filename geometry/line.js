@@ -1,13 +1,21 @@
+const Point = require('./point');
 const { modulus } = require('../utils');
 
 class Line {
-  constructor({ points: { p1, p2 }, slope, yIntercept }) {
-    this.points = (p1 && p2) ? {
-      x1: p1.cartesian.x,
-      y1: p1.cartesian.y,
-      x2: p2.cartesian.x,
-      y2: p2.cartesian.y,
-    } : null;
+  constructor({ points, slope, yIntercept }) {
+    this.points = {
+      x1: null, y1: null, x2: null, y2: null,
+    };
+
+    if (points) {
+      const { p1, p2 } = points;
+      this.points = {
+        x1: p1.cartesian.x,
+        y1: p1.cartesian.y,
+        x2: p2.cartesian.x,
+        y2: p2.cartesian.y,
+      };
+    }
 
     const {
       x1, y1, x2, y2,
@@ -71,6 +79,13 @@ class Line {
   angleBetween(line) {
     return Math.abs(this.angle() - line.angle());
   }
+
+  intersect(line) {
+    const x = (line.c - this.c) / (this.m - line.m);
+    return new Point({ x, y: this.m * x + this.c });
+  }
 }
+
+console.log(new Line({ slope: 3, yIntercept: 3 }).intersect(new Line({ slope: 4, yIntercept: 2 })));
 
 module.exports = Line;
