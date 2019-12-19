@@ -33,7 +33,7 @@ class Line {
 
     this.equation = {
       slopeIntercept: `y = ${this.m}x + ${this.c}`,
-      pointSlope: `y - ${this.points ? y1 : this.yIntercept} = ${this.slope}(x - ${this.points ? x1 : 0}`,
+      pointSlope: `y - ${y1 || this.yIntercept} = ${this.slope}(x - ${x1 || 0})`,
       standard: `${this.a}x + ${this.b}y + ${this.c} = 0`,
     };
 
@@ -85,8 +85,12 @@ class Line {
     const x = (line.c - this.c) / (this.m - line.m);
     return new Point({ x, y: this.m * x + this.c });
   }
+
+  contains({ cartesian: { x, y } }) {
+    return y === this.m * x + this.c;
+  }
 }
 
-console.log(new Line({ slope: 3, yIntercept: 3 }).intersect(new Line({ slope: 4, yIntercept: 2 })));
+console.log(new Line({ slope: 3, yIntercept: 3 }).contains(new Point({ x: 0, y: 4 })));
 
 module.exports = Line;
