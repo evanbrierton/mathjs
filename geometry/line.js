@@ -1,5 +1,5 @@
 const Point = require('./point');
-const { modulus } = require('../utils');
+const { modulus, check, isNumber } = require('../utils');
 
 class Line {
   constructor({ points, slope, yIntercept }) {
@@ -10,10 +10,10 @@ class Line {
     if (points) {
       const { p1, p2 } = points;
       this.points = {
-        x1: p1.cartesian.x,
-        y1: p1.cartesian.y,
-        x2: p2.cartesian.x,
-        y2: p2.cartesian.y,
+        x1: p1.x,
+        y1: p1.y,
+        x2: p2.x,
+        y2: p2.y,
       };
     }
 
@@ -46,7 +46,7 @@ class Line {
         x1, x2, y1, y2,
       },
     } = this;
-    if (points) return modulus(x2 - x1, y2 - y1);
+    if (check(isNumber, points)) return modulus(x2 - x1, y2 - y1);
     throw Error('Line has no defined length.');
   }
 
@@ -90,7 +90,5 @@ class Line {
     return y === this.m * x + this.c;
   }
 }
-
-console.log(new Line({ slope: 3, yIntercept: 3 }).contains(new Point({ x: 0, y: 4 })));
 
 module.exports = Line;
