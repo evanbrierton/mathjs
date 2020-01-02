@@ -72,13 +72,9 @@ class Line {
     return [(b * x1 + a * x2) / (b + a), (b * y1 + a * y2) / (b + a)];
   }
 
-  angle() {
-    return Math.atan2(this.points.y2, this.points.x2);
-  }
+  angle = () => Math.atan2(this.points.y2, this.points.x2);
 
-  angleBetween(line) {
-    return Math.abs(this.angle() - line.angle());
-  }
+  angleBetween = (line) => Math.abs(this.angle() - line.angle());
 
   intersect(line) {
     if (this.m === line.m) throw Error('Lines are parallell');
@@ -86,9 +82,7 @@ class Line {
     return new Point({ x, y: this.m * x + this.c });
   }
 
-  contains({ cartesian: { x, y } }) {
-    return y === this.m * x + this.c;
-  }
+  contains = ({ x, y }) => y === this.m * x + this.c;
 }
 
 module.exports = Line;

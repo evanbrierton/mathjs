@@ -5,7 +5,6 @@ const arrEquals = (a, b) => (
 );
 
 const check = (fn, items) => (
-  (Array.isArray(items) ? items : Object.values(items)).every((item) => fn(item))
-);
+  Array.isArray(items) ? items : Object.values(items)).every((item) => fn(item));
 
 module.exports = { bind, arrEquals, check };
