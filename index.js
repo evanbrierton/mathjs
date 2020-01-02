@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 const { toDegrees } = require('./utils');
 const { Line, Point } = require('./geometry');
+const Fraction = require('./number');
 
-console.log(
-  toDegrees(new Line({ slope: 1, yIntercept: 0 }).angle()),
-);
+console.log(new Fraction(3));
