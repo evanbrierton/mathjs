@@ -1,19 +1,21 @@
-const { gcd } = require('../utils');
+const gcd = (a, b) => (b < Number.MIN_VALUE ? a : gcd(b, Math.floor(a % b)));
 
 class Fraction {
   constructor(n) {
-    this.value = n;
+    this.negative = !(n >= 0);
 
-    if (parseFloat(n) === parseInt(n, 10)) {
+    this.posValue = Math.abs(n);
+
+    if (parseFloat(this.posValue) === parseInt(this.posValue, 10)) {
       this.numerator = n;
       this.denominator = 1;
       this.integer = true;
     } else {
-      const denominator = 10 ** n.toString().length - 2;
-      const numerator = n * denominator;
+      const denominator = 10 ** (this.posValue.toString().length - 2);
+      const numerator = this.posValue * denominator;
       const divisor = gcd(numerator, denominator);
       this.denominator = denominator / divisor;
-      this.numerator = numerator / divisor;
+      this.numerator = this.negative ? -1 : 1 * (numerator / divisor);
       this.integer = false;
     }
 
@@ -23,13 +25,12 @@ class Fraction {
       string: '',
     };
 
-    if (this.numerator > this.denominator) {
-      this.mixedNumber.whole = Math.floor(this.numerator / this.denominator);
-      this.mixedNumber.fractional = n - this.mixedNumber.whole;
-      this.mixedNumber.string = `${this.mixedNumber.whole}${this.integer ? '' : ` ${new Fraction(this.mixedNumber.fractional).string}`}`;
-    }
+    this.mixedNumber.whole = Math.floor(this.numerator / this.denominator);
+    this.mixedNumber.fractional = this.posValue - this.mixedNumber.whole;
 
     this.string = `${Math.floor(this.numerator)}${this.integer ? '' : `/${Math.floor(this.denominator)}`}`;
+
+    this.mixedNumber.string = Math.abs(this.posValue) < 1 ? this.string : `${this.mixedNumber.whole}${(this.integer) ? '' : ` ${new Fraction(this.mixedNumber.fractional).string}`}`;
   }
 }
 

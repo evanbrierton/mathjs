@@ -1,4 +1,5 @@
 const Point = require('./point');
+const { Fraction } = require('../number');
 const { modulus, check, isNumber } = require('../utils');
 
 class Line {
@@ -9,6 +10,7 @@ class Line {
 
     if (points) {
       const { p1, p2 } = points;
+      if (p1.x === p2.x && p1.y === p2.y) throw Error('Cannot generate a line from a single point');
       this.points = {
         x1: p1.x,
         y1: p1.y,
@@ -21,10 +23,10 @@ class Line {
       x1, y1, x2, y2,
     } = this.points;
 
-    this.slope = slope || (y2 - y1) / (x2 - x1);
+    this.slope = isNumber(slope) ? slope : (y2 - y1) / (x2 - x1);
 
     this.yIntercept = yIntercept || y1 - this.slope * x1;
-    this.xIntercept = -this.yIntercept / this.slope;
+    this.xIntercept = x1 === x2 ? x1 : -this.yIntercept / this.slope;
 
     this.m = this.slope;
     this.a = this.m;
@@ -60,7 +62,7 @@ class Line {
     throw Error('Line has no defined midpoint.');
   }
 
-  distanceFrom({ cartesian: { x, y } }) {
+  distanceFrom({ x, y }) {
     const { a, b, c } = this;
     Math.abs((a * x + b * y + c) / modulus(a, b));
   }
@@ -72,17 +74,32 @@ class Line {
     return [(b * x1 + a * x2) / (b + a), (b * y1 + a * y2) / (b + a)];
   }
 
-  angle = () => Math.atan2(this.points.y2, this.points.x2);
+  angle = () => (
+    this.slope === Infinity
+      ? Math.PI / 2
+      : Math.atan2(new Fraction(this.slope).numerator, new Fraction(this.slope).denominator)
+  );
 
   angleBetween = (line) => Math.abs(this.angle() - line.angle());
 
   intersect(line) {
-    if (this.m === line.m) throw Error('Lines are parallell');
-    const x = (line.c - this.c) / (this.m - line.m);
-    return new Point({ x, y: this.m * x + this.c });
+    if (this.m === line.m) throw Error('Lines are parallel');
+    let x = (line.c - this.c) / (this.m - line.m);
+    let y = this.m * x + this.c;
+    if (this.m === Infinity) {
+      x = this.xIntercept;
+      y = line.m * x + line.c;
+    }
+    if (line.m === Infinity) {
+      x = line.xIntercept;
+      y = this.m * x + this.c;
+    }
+    return new Point({ x, y });
   }
 
-  contains = ({ x, y }) => y === this.m * x + this.c;
+  contains = ({ x, y }) => (
+    this.m !== Infinity ? y === this.m * x + this.c : x === this.xIntercept
+  );
 }
 
 module.exports = Line;

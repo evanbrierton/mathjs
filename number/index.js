@@ -1,3 +1,3 @@
 const Fraction = require('./fraction');
 
-module.exports = Fraction;
+module.exports = { Fraction };

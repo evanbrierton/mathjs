@@ -4,6 +4,7 @@ class Point {
   constructor({
     x, y, radius, angle,
   }) {
+    console.log(x, y, radius, angle);
     if (!((check(isNumber, [x, y])) || (check(isNumber, radius, angle)))) {
       throw Error('Not enough information provided to construct point');
     }
