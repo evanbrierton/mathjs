@@ -1,6 +1,6 @@
 const Point = require('./point');
 const { Fraction } = require('../number');
-const { modulus, check, isNumber } = require('../utils');
+const { check } = require('../utils');
 
 class Line {
   constructor({ points, slope, yIntercept }) {
@@ -23,7 +23,7 @@ class Line {
       x1, y1, x2, y2,
     } = this.points;
 
-    this.slope = isNumber(slope) ? slope : (y2 - y1) / (x2 - x1);
+    this.slope = Math.isNumber(slope) ? slope : (y2 - y1) / (x2 - x1);
 
     this.yIntercept = yIntercept || y1 - this.slope * x1;
     this.xIntercept = x1 === x2 ? x1 : -this.yIntercept / this.slope;
@@ -48,7 +48,7 @@ class Line {
         x1, x2, y1, y2,
       },
     } = this;
-    if (check(isNumber, points)) return modulus(x2 - x1, y2 - y1);
+    if (check(Math.isNumber, points)) return Math.modulus(x2 - x1, y2 - y1);
     throw Error('Line has no defined length.');
   }
 
@@ -64,7 +64,7 @@ class Line {
 
   distanceFrom({ x, y }) {
     const { a, b, c } = this;
-    Math.abs((a * x + b * y + c) / modulus(a, b));
+    Math.abs((a * x + b * y + c) / Math.modulus(a, b));
   }
 
   divideRatio(a, b) {

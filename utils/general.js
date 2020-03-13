@@ -1,3 +1,5 @@
+const util = require('util');
+
 const bind = (fn, ...boundArgs) => (...args) => fn(...args, ...boundArgs);
 
 const arrEquals = (a, b) => (
@@ -7,4 +9,8 @@ const arrEquals = (a, b) => (
 const check = (fn, items) => (
   Array.isArray(items) ? items : Object.values(items)).every((item) => fn(item));
 
-module.exports = { bind, arrEquals, check };
+const print = (item) => console.log(util.inspect(item, false, null, true));
+
+module.exports = {
+  bind, arrEquals, check, print,
+};

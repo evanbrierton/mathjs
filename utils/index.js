@@ -1,9 +1,11 @@
-const constants = require('./constants');
+require('./constants');
+require('./geometry');
+require('./number');
+require('./trigonometry');
+
 const general = require('./general');
-const geometry = require('./geometry');
-const number = require('./number');
 const Ring = require('./ring');
 
 module.exports = {
-  ...constants, ...general, ...geometry, ...number, Ring,
+  ...general, Ring,
 };

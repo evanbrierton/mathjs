@@ -1,10 +1,12 @@
 const isNumber = (n) => typeof n === 'number' && !Number.isNaN(n);
 
-const factorial = (n) => ((n === 0 || n === 1) ? 1 : n * factorial(n - 1));
+const factorial = (n) => ((n === 0 || n === 1) ? 1 : n * Math.factorial(n - 1));
 
-const choose = (n, k) => (k > n ? 0 : factorial(n) / (factorial(k) * factorial(n - k)));
+const choose = (n, k) => (
+  k > n ? 0 : factorial(n) / (factorial(k) * factorial(n - k))
+);
 
-const gcd = (a, b) => (b < Number.MIN_VALUE ? a : gcd(b, Math.floor(a % b)));
+const gcd = (a, b) => (b < Number.MIN_VALUE ? a : Math.gcd(b, Math.floor(a % b)));
 
 const sum = (k, n, fn) => {
   let total = 0;
@@ -13,5 +15,5 @@ const sum = (k, n, fn) => {
 };
 
 module.exports = {
-  isNumber, factorial, gcd, choose, sum,
+  isNumber, factorial, choose, gcd, sum,
 };
