@@ -1,9 +1,15 @@
-class GeometricSequence {
+const { ArrayProxy } = require('../utils');
+
+class GeometricSequence extends ArrayProxy {
   constructor(firstTerm, commonRatio) {
+    super(
+      (target, n) => firstTerm * commonRatio ** (n),
+      [],
+      Object.getOwnPropertyNames(GeometricSequence.prototype),
+    );
+
     this.firstTerm = firstTerm;
     this.commonRatio = commonRatio;
-
-    this.terms = new Proxy(this, { get: (target, n) => firstTerm * commonRatio ** (n) });
   }
 
   sum(n) {
