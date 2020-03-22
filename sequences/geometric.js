@@ -12,6 +12,4 @@ class GeometricSequence {
   }
 }
 
-console.log(new GeometricSequence(1, 2).terms[1]);
-
 module.exports = GeometricSequence;

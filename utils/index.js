@@ -4,8 +4,10 @@ require('./number');
 require('./trigonometry');
 
 const general = require('./general');
+const ArrayProxy = require('./arrayProxy');
 const Ring = require('./ring');
 
+
 module.exports = {
-  ...general, Ring,
+  ...general, ArrayProxy, Ring,
 };

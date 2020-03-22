@@ -41,8 +41,4 @@ class LinearCongruentialGenerator {
   }
 }
 
-const L = new LinearCongruentialGenerator(4, 9, 9, 1);
-
-console.log(L.range(1, 6));
-
 module.exports = LinearCongruentialGenerator;
