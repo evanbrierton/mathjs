@@ -1,4 +1,4 @@
-const { ArrayProxy } = require('../utils');
+const { ArrayProxy, getMethods } = require('../utils');
 
 class LinearCongruentialGenerator extends ArrayProxy {
   constructor(multiplier, increment, modulus, seed) {
@@ -9,7 +9,7 @@ class LinearCongruentialGenerator extends ArrayProxy {
           : (this.multiplier * this.terms[n - 1] + this.increment) % this.modulus
       ),
       [],
-      Object.getOwnPropertyNames(LinearCongruentialGenerator),
+      getMethods(LinearCongruentialGenerator),
     );
     if (modulus <= 0) throw Error('Modulus must be greater than 0');
     this.modulus = modulus;
@@ -32,12 +32,12 @@ class LinearCongruentialGenerator extends ArrayProxy {
   setSeed(seed) {
     if (seed < 0) throw Error('Seed must be greater than 0');
     if (seed >= this.modulus) throw Error('Seed must be less than modulus');
-    this.#seedInternal = seed;
+    this.seedInternal = seed;
   }
 
   get seed() {
     if (!this.seedInternal) throw Error('Generator must be seeded');
-    return this.#seedInternal;
+    return this.seedInternal;
   }
 }
 

@@ -12,9 +12,10 @@ const getMaxValue = (arr) => arr.reduce((acc, next) => (next > acc ? next : acc)
 const check = (fn, items) => (
   Array.isArray(items) ? items : Object.values(items)).every((item) => fn(item));
 
-// const isArrayOf(arr, Class)
 const print = (item) => console.log(util.inspect(item, false, null, true));
 
+const getMethods = (Class) => Object.getOwnPropertyNames(Class.prototype).filter((method) => method !== 'constructor');
+
 module.exports = {
-  bind, arrEquals, check, print, getMinValue, getMaxValue,
+  bind, arrEquals, check, print, getMinValue, getMaxValue, getMethods,
 };

@@ -1,4 +1,4 @@
-const { ArrayProxy, Ring } = require('../utils');
+const { ArrayProxy, Ring, getMethods } = require('../utils');
 
 class Cycle extends ArrayProxy {
   constructor(...entries) {
@@ -10,23 +10,24 @@ class Cycle extends ArrayProxy {
           : +key
       ),
       entries,
-      Object.getOwnPropertyNames(Cycle.prototype),
+      getMethods(Cycle),
     );
     this.order = entries.length;
   }
 
   compose(cycle) {
-    const elements = Array.from(new Set([...this, ...cycle])).sort();
+    const elements = new Ring(...Array.from(new Set([...this, ...cycle])).sort());
     const disjointCycles = new Ring(new Ring(elements[0]));
 
-    elements.slice(1, elements.length + 1).forEach(() => {
-      const nextValue = this[cycle[disjointCycles[-1][-1]]];
-      if (disjointCycles[-1].includes(nextValue)) {
-        disjointCycles
-          .push(new Ring(elements.filter((element) => !disjointCycles[-1].includes(element))[0]));
-      } else disjointCycles[-1].push(nextValue);
-    });
+    elements.slice(1).forEach(() => {
+      const currentCycle = disjointCycles[-1];
+      const nextValue = this[cycle[currentCycle[-1]]];
 
+      if (currentCycle.includes(nextValue)) {
+        disjointCycles
+          .push(new Ring(elements.filter((element) => !currentCycle.includes(element))[0]));
+      } else currentCycle.push(nextValue);
+    });
 
     return disjointCycles.map((i) => new Cycle(...Array.from(i)));
   }

@@ -1,11 +1,11 @@
-const { ArrayProxy } = require('../utils');
+const { ArrayProxy, getMethods } = require('../utils');
 
 class ArithmeticSequence extends ArrayProxy {
   constructor(firstTerm, commonDifference) {
     super(
       (target, n) => firstTerm + n * commonDifference,
       [],
-      Object.getOwnPropertyNames(ArithmeticSequence.prototype),
+      getMethods(ArithmeticSequence),
     );
     this.firstTerm = firstTerm;
     this.commonDifference = commonDifference;
