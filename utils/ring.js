@@ -1,4 +1,5 @@
 const ArrayProxy = require('./arrayProxy');
+const { flatten } = require('./general');
 
 class Ring extends ArrayProxy {
   constructor(...entries) {
@@ -10,9 +11,11 @@ class Ring extends ArrayProxy {
   }
 
   flatten() {
-    return new Ring(
-      ...this.reduce((acc, next) => [...acc, ...(Array.isArray(next) ? next : [next])]),
-    );
+    return new Ring(...flatten(this));
+  }
+
+  shift(n = 1) {
+    return this.map((entry, i, ring) => ring[i - n]);
   }
 }
 

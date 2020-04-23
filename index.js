@@ -1,29 +1,35 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 const {
-  toDegrees, toPiRadians, print, choose, sum, Ring, ArrayProxy,
+  PHI, toDegrees, toPiRadians, print, choose, sum, Ring, ArrayProxy, gcd, product,
 } = require('./utils');
 const {
   Line, Point, Triangle, RegularPolygon,
 } = require('./geometry');
 const {
+  Sequence,
   ArithmeticSequence,
   Cycle,
   GeometricSequence,
   LinearCongruentialGenerator,
   Permutation,
   RecursiveSequence,
+  Group,
+  SymmetricGroup,
+  CyclicGroup,
+  DihedralGroup,
+  RotationalGroup,
 } = require('./sequences');
 const { Fraction } = require('./number');
+const { Matrix, Vector } = require('./matrices');
 
-// console.log(new Cycle(1, 4, 3).compose(new Cycle(4, 5, 7)));
+// const indices = Object.values(
+//   Array.from(new SymmetricGroup(6)).map(({ type }) => type.sort())
+//     .reduce((acc, next, j) => ({ [next]: j, ...acc }), {}),
+// ).sort((a, b) => a.length - b.length);
 
-// const C = new Cycle(1, 4, 3);
+// print(
+//   Array.from(new SymmetricGroup(6)).filter((group, i) => indices.includes(i)).sort((a, b) => a.type.length - b.type.length),
+// );
 
-// C.push(5);
-
-console.log(new Cycle(1, 3, 2, 4, 7).compose(new Cycle(5, 6)));
-// console.log(new Cycle(6, 10, 1).includes(10));
-// console.log(Object.getOwnPropertyNames(Cycle.prototype));
-
-console.log(new ArithmeticSequence(0, 2)[3]);
+console.log(new Sequence((n, self) => 2 * self[n - 1] - 3, [1]).subSequence(0, 10));

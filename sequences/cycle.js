@@ -12,7 +12,33 @@ class Cycle extends ArrayProxy {
       entries,
       getMethods(Cycle),
     );
-    this.order = entries.length;
+    // this.order = entries.length;
+  }
+
+  static pushElementToCycleRing(cycleArray, nextValue, elements) {
+    if (cycleArray.flatten().includes(nextValue)) {
+      cycleArray
+        .push(new Ring(elements.filter((element) => !cycleArray.flatten().includes(element))[0]));
+    } else cycleArray[-1].push(nextValue);
+  }
+
+  static toCycleArray(input, output) {
+    const elements = new Ring(...Array.from(input));
+    const disjointCycles = new Ring(new Ring(Array.from(input)[0]));
+    if (Array.from(output)[0] !== disjointCycles[0][0]) {
+      disjointCycles[0].push(Array.from(output)[0]);
+    }
+
+    Array.from(input).slice(disjointCycles[0].length).forEach(() => {
+      this.pushElementToCycleRing(
+        disjointCycles,
+        Array.from(output)[Array.from(input).indexOf(disjointCycles.flatten()[-1])],
+        elements,
+      );
+    });
+
+    return Array.from(disjointCycles)
+      .map((i) => new Cycle(...Array.from(i)));
   }
 
   compose(cycle) {
@@ -20,16 +46,9 @@ class Cycle extends ArrayProxy {
     const disjointCycles = new Ring(new Ring(elements[0]));
 
     elements.slice(1).forEach(() => {
-      const currentCycle = disjointCycles[-1];
-      const nextValue = this[cycle[currentCycle[-1]]];
-
-      if (currentCycle.includes(nextValue)) {
-        disjointCycles
-          .push(new Ring(elements.filter((element) => !currentCycle.includes(element))[0]));
-      } else currentCycle.push(nextValue);
+      Cycle.pushElementToCycleRing(disjointCycles, this[cycle[disjointCycles[-1][-1]]], elements);
     });
-
-    return disjointCycles.map((i) => new Cycle(...Array.from(i)));
+    return Array.from(disjointCycles).map((i) => new Cycle(...Array.from(i)));
   }
 }
 
